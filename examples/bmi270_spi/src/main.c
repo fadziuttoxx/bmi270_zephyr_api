@@ -9,6 +9,8 @@
 #include <zephyr/drivers/sensor.h>
 #include <stdio.h>
 #include "bmi270_api.h"
+
+
 double sensor_get_double(const struct sensor_value *val);
 
 
@@ -45,7 +47,7 @@ void main(void)
 	bmi270_basic_config_gyr(dev, 500, 800, 1);
 	// bmi270_config_anymotion_interrupt(dev,0xAA,2);
 	bmi270_set_anymotion_trigger(dev, trigger_handler);
-
+	bmi270_read
 
 	while (1) {
 		/* 10ms period, 100Hz Sampling frequency */

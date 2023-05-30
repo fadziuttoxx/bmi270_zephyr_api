@@ -4,8 +4,9 @@
 #include <zephyr/drivers/sensor.h>
 #include <stdio.h>
 #include "bmi270_api.h"
+#include <../../../../drivers/sensor/bmi270/bmi270.h>
 struct sensor_trigger trig;
-// generate header file
+
 void bmi270_init(const struct device *const bmi270_dev){
     if (!device_is_ready(bmi270_dev))
 	{
@@ -110,7 +111,6 @@ void bmi270_set_anymotion_trigger(const struct device *const bmi270_dev, sensor_
 	trig.chan = SENSOR_CHAN_ACCEL_XYZ;
 	trig.type = SENSOR_TRIG_MOTION;
 	rc = sensor_trigger_set(bmi270_dev, &trig, trigger_handler);
-
 	if (rc != 0) {
 		printf("Trigger set failed: %d\n", rc);
 		return;
