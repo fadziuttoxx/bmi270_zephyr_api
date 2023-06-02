@@ -13,7 +13,6 @@ void bmi270_init(const struct device *const bmi270_dev){
 		printf("Device %s is not ready\n", bmi270_dev->name);
 		return;
 	}
-
 	printf("Device %p name is %s\n", bmi270_dev, bmi270_dev->name);
 }
 
