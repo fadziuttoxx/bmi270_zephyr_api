@@ -23,7 +23,7 @@ W przykładzie podłączono do arduino_spi, arduino_i2c.
 
  `CONFIG_GPIO=y`
 
-`CONFIG_SPI=y` lub 'CONFIG_I2C=y'
+`CONFIG_SPI=y / CONFIG_I2C=y`
 
 `CONFIG_SENSOR=y`
 
