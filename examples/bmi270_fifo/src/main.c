@@ -15,7 +15,6 @@
 /******************************************************************************/
 /*!                  Macros                                                   */
 
-#define BMI270_SPI_DUMMY_BYTE 1
 /*! Buffer size allocated to store raw FIFO data. */
 #define BMI2_FIFO_RAW_DATA_BUFFER_SIZE UINT16_C(2048)
 
@@ -48,7 +47,10 @@ uint16_t fifo_buffer_size = BMI2_FIFO_RAW_DATA_BUFFER_SIZE + SENSORTIME_OVERHEAD
 /* Number of bytes of FIFO data
  * NOTE : Dummy byte (for SPI Interface) required for FIFO data read must be given as part of array size
  * Array size same as fifo_buffer_size
+ * FROM BMI270 datasheet: That means, for a basic read operation two bytes have to be read and the first has to be dropped and the second byte must be interpreted.
+ * wydaje sie ze ten dummy byte jest pomijany już wcześniej w funkcji odpowiedzialnej za odczyt rejestrów bmi270 po SPI (bmi270_reg_read_spi) dlatego tutaj go pomijam
  */
+
 uint8_t fifo_data[BMI2_FIFO_RAW_DATA_BUFFER_SIZE + SENSORTIME_OVERHEAD_BYTE];
 
 /* Array of accelerometer frames -> Total bytes =
@@ -118,9 +120,9 @@ void main(void)
 	uint8_t reg_read;
 
 	bmi270_init(dev);
-	
+
 	// testing purpose only
-	bmi270_reg_read(dev, BMI270_REG_INT1_IO_CTRL, &reg_read, 1);
+	bmi270_reg_read(dev, BMI270_REG_INT2_IO_CTRL, &reg_read, 1);
 	printf("INT2_IO_CTRL: %d\n", reg_read);
 
 	bmi270_config_ffull_interrupt(dev, 1);
@@ -144,7 +146,7 @@ void main(void)
 			printf("rslt bmi270_get_fifo_length: %d\n", rslt);
 
 			/* Updating FIFO length to be read based on available length and dummy byte updation */
-			fifoframe.length = fifo_length + SENSORTIME_OVERHEAD_BYTE + BMI270_SPI_DUMMY_BYTE;
+			fifoframe.length = fifo_length + SENSORTIME_OVERHEAD_BYTE;
 
 			printf("\nFIFO data bytes available : %d \n", fifo_length);
 			printf("\nFIFO data bytes requested : %d \n", fifoframe.length);

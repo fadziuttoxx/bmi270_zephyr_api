@@ -439,15 +439,6 @@ int8_t bmi270_extract_accel(struct bmi2_sens_axes_data *accel_data, uint16_t *ac
 
 	if ((accel_data != NULL) && (accel_length != NULL) && (fifo != NULL))
 	{
-		/* Check if this is the first iteration of data unpacking
-		 * if yes, then consider dummy byte on SPI
-		 */
-		if (fifo->acc_byte_start_idx == 0)
-		{
-			/* Dummy byte included */
-			fifo->acc_byte_start_idx = 1;
-		}
-
 		/* Parsing the FIFO data in header-less mode */
 		if (fifo->header_enable == 0)
 		{
